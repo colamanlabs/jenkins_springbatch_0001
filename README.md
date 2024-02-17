@@ -519,6 +519,51 @@ E-mail Notification
 ```
 
 
+```
+메이븐 package 진행시 테스트를 하지 않도록 설정을 바꾼다.
+"-DskipTests=true package"
+
+```
+
+```
+빌드로그 정상이다.
+
+Started by user colaman_mason
+Running as SYSTEM
+Building in workspace /var/lib/jenkins/workspace/First Job
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/First Job/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/colamanlabs/jenkins_springbatch_0001.git # timeout=10
+Fetching upstream changes from https://github.com/colamanlabs/jenkins_springbatch_0001.git
+...
+[First Job] $ mvn clean
+...
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  6.093 s
+[[1;34mINFO[m] Finished at: 2024-02-18T01:12:02+09:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+An attempt to send an e-mail to empty list of recipients, ignored.
+Finished: SUCCESS
+
+...
+
+[First Job] $ mvn -DskipTests=true package
+...
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  6.093 s
+[[1;34mINFO[m] Finished at: 2024-02-18T01:12:02+09:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+An attempt to send an e-mail to empty list of recipients, ignored.
+Finished: SUCCESS
+```
+
+
 ### 남은 TO-DO
 
 빌드는 되었지만, 지정경로로 배포가 되지 않았다.\

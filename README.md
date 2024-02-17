@@ -416,3 +416,113 @@ Finished: FAILURE
 
 **결국 깃허브에 최상위 루트로 빌드되는 프로젝트를 만들어야 한다.**
 
+
+
+
+
+# 젠킨스 설치 및 연동 삽질기 2/2
+
+
+젠킨스 연동 삽질기 1 결과, 최종 연동 까지는 추가 작업이 필요함을 알았다.
+
+
+```
+TO-DO 1)
+깃허브 에 빌드대상 프로젝트의 리포지토리를 만들어야 한다.
+
+
+TO-DO 2)
+해당 리포지토리의 프로젝트 소스를 구현해야 한다.
+구현을 마치면 해당 리포지토리에 push 해야 한다.
+
+
+TO-DO 3)
+젠킨스에 설정해야 한다.
+```
+
+
+## 1. 깃허브 에 빌드대상 프로젝트의 리포지토리 생성
+깃허브에 새 리포지토리를 만들었다.
+
+```
+https://github.com/colamanlabs/jenkins_springbatch_0001.git
+```
+
+## 2. 프로젝트 소스 구현
+깃허브와 젠킨스 연동 확인이 목적이므로, STS 가 만든 최초 기본 소스를 그대로 활용한다.\
+깃허브에 소스를 push 한다.
+
+
+## 3. 젠킨스 설정하기
+깃허브 소스를 가져오도록 하는 설정(리포지토리 설정)을 적용하고,
+메이븐으로 clean, package 하도록 설정한다.
+
+
+```
+리포지토리 URL https://github.com/colamanlabs/jenkins_springbatch_0001.git 적용하고, \
+크리덴셜은 전에 얻은 토큰으로 등록한다.
+
+이 상태서 빌드하면 깃허브에서 소스는 잘 가져온다.
+
+colaman@vm-dev-00:/var/lib/jenkins/workspace/First Job$ 
+colaman@vm-dev-00:/var/lib/jenkins/workspace/First Job$ pwd
+/var/lib/jenkins/workspace/First Job
+colaman@vm-dev-00:/var/lib/jenkins/workspace/First Job$ 
+colaman@vm-dev-00:/var/lib/jenkins/workspace/First Job$ ls -al
+합계 52
+drwxr-xr-x 6 jenkins jenkins  4096  2월 18 00:45 .
+drwxr-xr-x 3 jenkins jenkins  4096  2월 17 20:17 ..
+drwxr-xr-x 8 jenkins jenkins  4096  2월 18 00:45 .git
+-rw-r--r-- 1 jenkins jenkins   395  2월 17 23:28 .gitignore
+drwxr-xr-x 3 jenkins jenkins  4096  2월 17 23:28 .mvn
+-rw-r--r-- 1 jenkins jenkins 11290  2월 17 23:28 mvnw
+-rw-r--r-- 1 jenkins jenkins  7592  2월 17 23:28 mvnw.cmd
+-rw-r--r-- 1 jenkins jenkins  2498  2월 17 23:28 pom.xml
+drwxr-xr-x 4 jenkins jenkins  4096  2월 17 23:28 src
+drwxr-xr-x 9 jenkins jenkins  4096  2월 18 00:45 target
+colaman@vm-dev-00:/var/lib/jenkins/workspace/First Job$
+
+그런데, 필요한 메이븐 빌드가 안되어 있다.
+target 디렉토리에 jar 빌드가 안되어 있다.
+
+
+Build Steps 메뉴에 Invoke top-level Maven targets 를 등록한다.
+골은 clean, package 를 각각 등록한다.
+
+그런데, 젠킨스도 결국에는 메이븐을 호출하는 것이므로,
+사전에 메이븐이 설치되어 있어야 한다.
+
+[First Job] $ mvn clean
+FATAL: command execution failed
+java.io.IOException: error=2, 그런 파일이나 디렉터리가 없습니다
+	at java.base/java.lang.ProcessImpl.forkAndExec(Native Method)
+	at java.base/java.lang.ProcessImpl.<init>(ProcessImpl.java:314)
+	at java.base/java.lang.ProcessImpl.start(ProcessImpl.java:244)
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1110)
+Caused: java.io.IOException: Cannot run program "mvn" (in directory "/var/lib/jenkins/workspace/First Job"): error=2, 그런 파일이나 디렉터리가 없습니다
+	at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1143)
+
+이렇게 실패한다.
+
+apt install maven 으로 설치한다.
+
+다시 빌드 나우 하면 빌드가 잘 된다.
+
+```
+
+```
+빌드후 조치로 메일을 받으려고 했는데, 동작하지 않고, 에러난다. 통신에러
+나중에 확인하자.
+
+빌드 후 조치
+E-mail Notification
+```
+
+
+### 남은 TO-DO
+
+빌드는 되었지만, 지정경로로 배포가 되지 않았다.\
+배포는 별도 스크립트로 지정해야 한다.\
+"빌드후 조치" 서브메뉴에는 쉘 실행 메뉴가 없다.\
+"빌드 스탭" 에 "Execute shell" 이 있으니 해당 메뉴에 쉘을 등록하자.
+

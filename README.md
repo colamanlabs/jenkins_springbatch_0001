@@ -519,6 +519,107 @@ E-mail Notification
 ```
 
 
+```
+메이븐 package 진행시 테스트를 하지 않도록 설정을 바꾼다.
+"-DskipTests=true package"
+
+```
+
+```
+빌드로그 정상이다.
+
+Started by user colaman_mason
+Running as SYSTEM
+Building in workspace /var/lib/jenkins/workspace/First Job
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/First Job/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/colamanlabs/jenkins_springbatch_0001.git # timeout=10
+Fetching upstream changes from https://github.com/colamanlabs/jenkins_springbatch_0001.git
+...
+[First Job] $ mvn clean
+...
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  6.093 s
+[[1;34mINFO[m] Finished at: 2024-02-18T01:12:02+09:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+An attempt to send an e-mail to empty list of recipients, ignored.
+Finished: SUCCESS
+
+...
+
+[First Job] $ mvn -DskipTests=true package
+...
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  6.093 s
+[[1;34mINFO[m] Finished at: 2024-02-18T01:12:02+09:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+An attempt to send an e-mail to empty list of recipients, ignored.
+Finished: SUCCESS
+```
+
+
+```
+실행로그
+colaman@vm-dev-00:/var/lib/jenkins/workspace/First Job/target$ java -jar ./jenkins_springbatch_0001-0.0.1-SNAPSHOT.jar requestDate=20240218
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::               (v2.7.18)
+
+2024-02-18 01:16:59.602  INFO 10062 --- [           main] .c.s.s.JenkinsSpringbatch0001Application : Starting JenkinsSpringbatch0001Application v0.0.1-SNAPSHOT using Java 17.0.9 on vm-dev-00 with PID 10062 (/var/lib/jenkins/workspace/First Job/target/jenkins_springbatch_0001-0.0.1-SNAPSHOT.jar started by colaman in /var/lib/jenkins/workspace/First Job/target)
+2024-02-18 01:16:59.606  INFO 10062 --- [           main] .c.s.s.JenkinsSpringbatch0001Application : No active profile set, falling back to 1 default profile: "default"
+2024-02-18 01:17:01.715  INFO 10062 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-02-18 01:17:02.076  INFO 10062 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-02-18 01:17:02.295  INFO 10062 --- [           main] o.s.b.c.r.s.JobRepositoryFactoryBean     : No database type set, using meta data indicating: H2
+2024-02-18 01:17:02.591  INFO 10062 --- [           main] o.s.b.c.l.support.SimpleJobLauncher      : No TaskExecutor has been set, defaulting to synchronous executor.
+2024-02-18 01:17:02.836  INFO 10062 --- [           main] .c.s.s.JenkinsSpringbatch0001Application : Started JenkinsSpringbatch0001Application in 3.883 seconds (JVM running for 4.619)
+2024-02-18 01:17:02.839  INFO 10062 --- [           main] o.s.b.a.b.JobLauncherApplicationRunner   : Running default command line with: [requestDate=20240218]
+2024-02-18 01:17:02.931  INFO 10062 --- [           main] c.c.s.s0001.MyParameterValidator         : [MyParameterValidator/validate] BEGIN
+2024-02-18 01:17:02.933  INFO 10062 --- [           main] c.c.s.s0001.MyParameterValidator         : [MyParameterValidator/validate] mapParameters.size():[1]
+2024-02-18 01:17:02.933  INFO 10062 --- [           main] c.c.s.s0001.MyParameterValidator         : [MyParameterValidator/validate] strKey:[requestDate]	jobParameter:[20240218]
+2024-02-18 01:17:02.933  INFO 10062 --- [           main] c.c.s.s0001.MyParameterValidator         : [MyParameterValidator/checkJobParameterRequestDate] BEGIN
+2024-02-18 01:17:02.933  INFO 10062 --- [           main] c.c.s.s0001.MyParameterValidator         : [MyParameterValidator/checkJobParameterRequestDate] requestDate:[20240218]
+2024-02-18 01:17:02.933  INFO 10062 --- [           main] c.c.s.s0001.MyParameterValidator         : [MyParameterValidator/checkJobParameterRequestDate] jobParameter requestDate:[20240218] is valid.
+2024-02-18 01:17:02.933  INFO 10062 --- [           main] c.c.s.s0001.MyParameterValidator         : [MyParameterValidator/checkJobParameterRequestDate] END
+2024-02-18 01:17:02.935  INFO 10062 --- [           main] c.c.s.s0001.MyParameterValidator         : [MyParameterValidator/validate] END
+2024-02-18 01:17:03.001  INFO 10062 --- [           main] o.s.b.c.l.support.SimpleJobLauncher      : Job: [SimpleJob: [name=JOB_0001]] launched with the following parameters: [{requestDate=20240218}]
+2024-02-18 01:17:03.036  INFO 10062 --- [           main] c.c.s.s0001.MyParameterValidator         : [MyParameterValidator/validate] BEGIN
+2024-02-18 01:17:03.036  INFO 10062 --- [           main] c.c.s.s0001.MyParameterValidator         : [MyParameterValidator/validate] mapParameters.size():[1]
+2024-02-18 01:17:03.037  INFO 10062 --- [           main] c.c.s.s0001.MyParameterValidator         : [MyParameterValidator/validate] strKey:[requestDate]	jobParameter:[20240218]
+2024-02-18 01:17:03.037  INFO 10062 --- [           main] c.c.s.s0001.MyParameterValidator         : [MyParameterValidator/checkJobParameterRequestDate] BEGIN
+2024-02-18 01:17:03.037  INFO 10062 --- [           main] c.c.s.s0001.MyParameterValidator         : [MyParameterValidator/checkJobParameterRequestDate] requestDate:[20240218]
+2024-02-18 01:17:03.037  INFO 10062 --- [           main] c.c.s.s0001.MyParameterValidator         : [MyParameterValidator/checkJobParameterRequestDate] jobParameter requestDate:[20240218] is valid.
+2024-02-18 01:17:03.037  INFO 10062 --- [           main] c.c.s.s0001.MyParameterValidator         : [MyParameterValidator/checkJobParameterRequestDate] END
+2024-02-18 01:17:03.037  INFO 10062 --- [           main] c.c.s.s0001.MyParameterValidator         : [MyParameterValidator/validate] END
+2024-02-18 01:17:03.096  INFO 10062 --- [           main] o.s.batch.core.job.SimpleStepHandler     : Executing step: [STEP_TASKLET_0001]
+2024-02-18 01:17:03.182  INFO 10062 --- [           main] c.c.s.s0001.MySimpleTasklet0001          : [MySimpleTasklet0001/execute] BEGIN
+2024-02-18 01:17:03.182  INFO 10062 --- [           main] c.c.s.s0001.MySimpleTasklet0001          : [MySimpleTasklet0001/execute] contribution:[[StepContribution: read=0, written=0, filtered=0, readSkips=0, writeSkips=0, processSkips=0, exitStatus=EXECUTING]]
+2024-02-18 01:17:03.184  INFO 10062 --- [           main] c.c.s.s0001.MySimpleTasklet0001          : [MySimpleTasklet0001/execute] chunkContext:[ChunkContext: attributes=[], complete=false, stepContext=SynchronizedAttributeAccessor: [scopedTarget.createTasklet0001=com.colamanlabs.springbatch.s0001.MySimpleTasklet0001@e383572], stepExecutionContext={batch.taskletType=jdk.proxy2.$Proxy48, batch.stepType=org.springframework.batch.core.step.tasklet.TaskletStep}, jobExecutionContext={}, jobParameters={requestDate=20240218}]
+2024-02-18 01:17:03.184  INFO 10062 --- [           main] c.c.s.s0001.MySimpleTasklet0001          : [MySimpleTasklet0001/execute] mapJobParameters:[{requestDate=20240218}]
+2024-02-18 01:17:03.184  INFO 10062 --- [           main] c.c.s.s0001.MySimpleTasklet0001          : [MySimpleTasklet0001/execute] retryCount:[null]
+2024-02-18 01:17:03.184  INFO 10062 --- [           main] c.c.s.s0001.MySimpleTasklet0001          : [MySimpleTasklet0001/execute] foo:[null]
+2024-02-18 01:17:03.185  INFO 10062 --- [           main] c.c.s.s0001.MySimpleTasklet0001          : [MySimpleTasklet0001/execute] name:[null]
+2024-02-18 01:17:03.185  INFO 10062 --- [           main] c.c.s.s0001.MySimpleTasklet0001          : [MySimpleTasklet0001/execute] requestDate:[20240218]
+2024-02-18 01:17:03.185  INFO 10062 --- [           main] c.c.s.s0001.MySimpleTasklet0001          : [MySimpleTasklet0001/execute] END
+2024-02-18 01:17:03.220  INFO 10062 --- [           main] o.s.batch.core.step.AbstractStep         : Step: [STEP_TASKLET_0001] executed in 123ms
+2024-02-18 01:17:03.232  INFO 10062 --- [           main] o.s.b.c.l.support.SimpleJobLauncher      : Job: [SimpleJob: [name=JOB_0001]] completed with the following parameters: [{requestDate=20240218}] and the following status: [COMPLETED] in 191ms
+2024-02-18 01:17:03.240  INFO 10062 --- [           main] .c.s.s.JenkinsSpringbatch0001Application : [JenkinsSpringbatch0001Application/init] BEGIN
+2024-02-18 01:17:03.240  INFO 10062 --- [           main] .c.s.s.JenkinsSpringbatch0001Application : [JenkinsSpringbatch0001Application/init] END
+2024-02-18 01:17:03.265  INFO 10062 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-02-18 01:17:03.299  INFO 10062 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+colaman@vm-dev-00:/var/lib/jenkins/workspace/First Job/target$ 
+```
+
 ### 남은 TO-DO
 
 빌드는 되었지만, 지정경로로 배포가 되지 않았다.\
